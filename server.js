@@ -22,11 +22,28 @@ app.post('/api/notes', (req, res) => {
     const newNote = req.body;
     const rawNotes = fs.readFileSync(path.join(__dirname, '/db/db.json'));
     const notes = JSON.parse(rawNotes);
+    newNote.id = (notes.length + 1);
     notes.push(newNote);
     const response = JSON.stringify(notes);
     fs.writeFileSync(path.join(__dirname, '/db/db.json'), response);
     res.json(newNote);
+});
 
+app.delete('/api/notes/:id', (req, res) => {
+    const rawId = req.params.id;
+    const id = parseInt(rawId);
+    const rawNotes = fs.readFileSync(path.join(__dirname, '/db/db.json'));
+    const notes = JSON.parse(rawNotes);
+    const rawOut = [];
+    for (let i = 0; i<notes.length; i++){
+        if(notes[i].id != id){
+            notes[i].id = rawOut.length + 1;
+            rawOut.push(notes[i]);
+        }
+    }
+    const response = JSON.stringify(rawOut);
+    fs.writeFileSync(path.join(__dirname, '/db/db.json'), response);
+    res.json(response);
 });
 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
