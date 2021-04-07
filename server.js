@@ -19,11 +19,14 @@ app.get('/js/index.js', (req, res) => res.sendFile(path.join(__dirname, '/public
 app.get('/api/notes', (req, res) => res.sendFile(path.join(__dirname, '/db/db.json')));
 
 app.post('/api/notes', (req, res) => {
-    fs.readFile(path.join(__dirname, 'db/db.json'), function(err, data){
-        if (err) throw err;
-        let notes = JSON.parse(data);
-        notes.push(req.body);
-    });
+    const newNote = req.body;
+    const rawNotes = fs.readFileSync(path.join(__dirname, '/db/db.json'));
+    const notes = JSON.parse(rawNotes);
+    notes.push(newNote);
+    const response = JSON.stringify(notes);
+    fs.writeFileSync(path.join(__dirname, '/db/db.json'), response);
+    res.json(newNote);
+
 });
 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
