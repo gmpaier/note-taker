@@ -12,7 +12,7 @@ app.use(express.json());
 
     //path for index.html's style sheet
 app.get('/css/styles.css', (req, res) => res.sendFile(path.join(__dirname, '/public/assets/css/styles.css')));
-    //path for index.html's associated javascript file
+    //path for notes.html's associated javascript file
 app.get('/js/index.js', (req, res) => res.sendFile(path.join(__dirname, '/public/assets/js/index.js')));
 
     //root route
