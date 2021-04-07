@@ -8,16 +8,23 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/public/index.html')));
+//routes
 
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/public/notes.html')));
-
+    //path for index.html's style sheet
 app.get('/css/styles.css', (req, res) => res.sendFile(path.join(__dirname, '/public/assets/css/styles.css')));
-
+    //path for index.html's associated javascript file
 app.get('/js/index.js', (req, res) => res.sendFile(path.join(__dirname, '/public/assets/js/index.js')));
 
+    //root route
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/public/index.html')));
+
+    //notes endpoint
+app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/public/notes.html')));
+
+    //get request for note list, stored in db.json
 app.get('/api/notes', (req, res) => res.sendFile(path.join(__dirname, '/db/db.json')));
 
+    //post request to note list, db.json; assigns ID associated with non-zero position in array
 app.post('/api/notes', (req, res) => {
     const newNote = req.body;
     const rawNotes = fs.readFileSync(path.join(__dirname, '/db/db.json'));
@@ -29,6 +36,7 @@ app.post('/api/notes', (req, res) => {
     res.json(newNote);
 });
 
+    //removes note element with matching ID of request; reassigns ID based on new non-zero array position
 app.delete('/api/notes/:id', (req, res) => {
     const rawId = req.params.id;
     const id = parseInt(rawId);

@@ -50,6 +50,7 @@ const deleteNote = (id) =>
     },
   });
 
+  //given function, displays active note; modified to remove read only attribute from new note - gmpaier 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
@@ -66,6 +67,7 @@ const renderActiveNote = () => {
   }
 };
 
+  //given function, handler for saving notes; modified to calll handleNewNoteView rather than renderActiveNote - gmpaier
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
